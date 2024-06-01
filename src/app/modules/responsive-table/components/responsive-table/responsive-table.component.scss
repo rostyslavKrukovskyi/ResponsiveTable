@@ -1,0 +1,13 @@
+.filters-header {
+  display: flex;
+  gap: 10px;
+  .status-section {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    .status-checkboxes {
+      display: flex;
+    }
+  }
+}
+
