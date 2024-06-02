@@ -1,45 +1,75 @@
-.filters-header {
-  display: flex;
-  gap: 10px;
-  .date-range-section {
-    display: flex;
-    gap: 10px;
-    .date-field {
-      display: flex;
-      flex-direction: column;
+:host {
+  height: calc(100% - 60px);
+  ::ng-deep {
+    .mat-mdc-text-field-wrapper {
+      flex: unset;
     }
   }
-  .status-section {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    .status-checkboxes {
-      display: flex;
-    }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 }
 
 .main-wrapper {
   height: calc(100% - 60px);
   padding: 30px;
-}
+  .filters-header {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    .left-filters-part {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .date-range-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      .date-field {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+    .status-section {
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      .status-checkboxes {
+        display: flex;
+      }
+    }
+    .search-field {
+      margin-top: 20px;
+      width: 270px;
+    }
+  }
 
-.status-indicator {
-  background: aqua;
-  display: inline-block;
-  width: 22px;
-  height: 12px;
-  margin-right: 0.5rem;
-}
+  .status-indicator.In\ Progress {
+    background-color: indianred;
+  }
 
-.status-indicator.In\ Progress {
-  background-color: indianred;
-}
+  .status-indicator.Completed {
+    background-color: green;
+  }
 
-.status-indicator.Completed {
-  background-color: green;
-}
+  .status-indicator.Pending {
+    background-color: yellow;
+  }
 
-.status-indicator.Pending {
-  background-color: yellow;
+  .no-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .status-indicator {
+    display: inline-block;
+    width: 22px;
+    height: 12px;
+    margin-right: 0.5rem;
+  }
 }
