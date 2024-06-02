@@ -89,25 +89,25 @@ export class ResponsiveTableComponent implements  OnInit {
 
   public ngOnInit(): void {
     this.createProductLinesFromMockData();
-    this.formGroup.get('orderNumberSearch')!.valueChanges.subscribe(() => {
+    this.formGroup.get('orderNumberSearch')?.valueChanges.subscribe(() => {
       this.applyFilters();
     });
-    this.formGroup.get('productLines')!.valueChanges.subscribe(() => {
+    this.formGroup.get('productLines')?.valueChanges.subscribe(() => {
       this.applyFilters();
     });
-    this.formGroup.get('inProgress')!.valueChanges.subscribe(() => {
+    this.formGroup.get('inProgress')?.valueChanges.subscribe(() => {
       this.applyFilters();
     });
-    this.formGroup.get('pending')!.valueChanges.subscribe(() => {
+    this.formGroup.get('pending')?.valueChanges.subscribe(() => {
       this.applyFilters();
     });
-    this.formGroup.get('completed')!.valueChanges.subscribe(() => {
+    this.formGroup.get('completed')?.valueChanges.subscribe(() => {
       this.applyFilters();
     });
-    this.formGroup.get('dateFrom')!.valueChanges.subscribe(() => {
+    this.formGroup.get('dateFrom')?.valueChanges.subscribe(() => {
       this.applyFilters();
     });
-    this.formGroup.get('dateTo')!.valueChanges.subscribe(() => {
+    this.formGroup.get('dateTo')?.valueChanges.subscribe(() => {
       this.applyFilters();
     });
   }
