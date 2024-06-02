@@ -1,6 +1,14 @@
 .filters-header {
   display: flex;
   gap: 10px;
+  .date-range-section {
+    display: flex;
+    gap: 10px;
+    .date-field {
+      display: flex;
+      flex-direction: column;
+    }
+  }
   .status-section {
     display: flex;
     flex-direction: column;
@@ -25,7 +33,7 @@
 }
 
 .status-indicator.In\ Progress {
-  background-color: yellow;
+  background-color: indianred;
 }
 
 .status-indicator.Completed {
@@ -33,5 +41,5 @@
 }
 
 .status-indicator.Pending {
-  background-color: blue;
+  background-color: yellow;
 }

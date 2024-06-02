@@ -18,17 +18,23 @@
       </mat-form-field>
     </section>
 
-    <section class="filter-section">
-      <div>Select Range</div>
-      <mat-form-field>
-        <mat-date-range-input [rangePicker]="picker">
-          <input matStartDate placeholder="From">
-          <input matEndDate placeholder="To">
-        </mat-date-range-input>
-        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
-      </mat-form-field>
+    <section class="filter-section date-range-section">
+      <div class="date-field">
+        <div>From</div>
+        <mat-form-field>
+          <input matInput  placeholder="Select date" [matDatepicker]="pickerFrom" formControlName="dateFrom">
+          <mat-datepicker-toggle matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+          <mat-datepicker #pickerFrom></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="date-field">
+        <div>To</div>
+        <mat-form-field>
+          <input matInput [matDatepicker]="pickerTo" formControlName="dateTo" placeholder="Select date">
+          <mat-datepicker-toggle  matIconSuffix [for]="pickerTo"></mat-datepicker-toggle>
+          <mat-datepicker #pickerTo></mat-datepicker>
+        </mat-form-field>
+      </div>
     </section>
 
     <mat-form-field class="example-full-width">

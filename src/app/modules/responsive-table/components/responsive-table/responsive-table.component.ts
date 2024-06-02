@@ -78,6 +78,8 @@ export class ResponsiveTableComponent implements  OnInit {
     pending: true,
     completed: true,
     productLines:  new FormControl(),
+    dateFrom: new FormControl(),
+    dateTo: new FormControl(),
     orderNumberSearch: ''
   });
   public productLines!: string[];
@@ -102,6 +104,12 @@ export class ResponsiveTableComponent implements  OnInit {
     this.formGroup.get('completed')!.valueChanges.subscribe(() => {
       this.applyFilters();
     });
+    this.formGroup.get('dateFrom')!.valueChanges.subscribe(() => {
+      this.applyFilters();
+    });
+    this.formGroup.get('dateTo')!.valueChanges.subscribe(() => {
+      this.applyFilters();
+    });
   }
 
   private applyFilters(): void {
@@ -110,12 +118,23 @@ export class ResponsiveTableComponent implements  OnInit {
     const inProgress = this.formGroup.get('inProgress')?.value ?? true;
     const pending = this.formGroup.get('pending')?.value ?? true;
     const completed = this.formGroup.get('completed')?.value ?? true;
+    const dateFrom = this.formGroup.get('dateFrom')?.value || null;
+    const dateTo = this.formGroup.get('dateTo')?.value || null;
 
     this.dataSource.data = this.mockedData.filter(item => {
       const matchesStatus =  (item.status === 'In Progress' && inProgress) || (item.status === 'Pending' && pending) || (item.status === 'Completed' && completed);
       const matchesOrderNumber = searchString ? item.orderNumber.toString().includes(searchString) : true;
       const matchesProductLine = selectedLines.length > 0 ? selectedLines.includes(item.productLine) : true;
-      return matchesOrderNumber && matchesProductLine && matchesStatus;
+      let matchesDateRange = true;
+      if (dateFrom || dateTo) {
+        if (dateFrom) {
+          matchesDateRange = new Date(item.dataRequested).getTime() >= new Date(dateFrom).getTime();
+        }
+        if (dateTo) {
+          matchesDateRange = matchesDateRange && new Date(item.dataRequested).getTime() <= new Date(dateTo).getTime();
+        }
+      }
+      return matchesOrderNumber && matchesProductLine && matchesStatus && matchesDateRange;
     });
   }
 
