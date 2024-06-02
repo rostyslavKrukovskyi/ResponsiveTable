@@ -1,15 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {FormBuilder, FormControl} from "@angular/forms";
-
-export interface TableDataResponse {
-  status: 'In Progress' | 'Pending' | 'Completed';
-  orderNumber: number;
-  productLine: string;
-  product: string;
-  quantity: string;
-  dataRequested: number;
-}
+import {merge, Subject, takeUntil} from "rxjs";
+import {TableDataResponse} from "../../model/order-data.model";
+import {OrderHistoryService} from "../../services/order-history.service";
 
 @Component({
   selector: 'app-responsive-table',
@@ -17,50 +11,10 @@ export interface TableDataResponse {
   styleUrls: ['./responsive-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ResponsiveTableComponent implements  OnInit {
-  public  mockedData: TableDataResponse[] = [
-    {
-      status: 'In Progress',
-      orderNumber: 2324,
-      productLine: 'Line1',
-      product: 'Product Name',
-      quantity: '12 m3',
-      dataRequested: 1717325038000,
-    },
-    {
-      status: 'Completed',
-      orderNumber: 132,
-      productLine: 'Line2',
-      product: 'Product Name 4',
-      quantity: '17 m3',
-      dataRequested: 1714646638000,
-    },
-    {
-      status: 'In Progress',
-      orderNumber:56,
-      productLine: 'Line3',
-      product: 'Product Name 67',
-      quantity: '189 m3',
-      dataRequested: 1712054638000
-    },
-    {
-      status: 'Pending',
-      orderNumber: 32,
-      productLine: 'Line4',
-      product: 'Product Name 4',
-      quantity: '12 m3',
-      dataRequested: 1709376238000
-    },
-    {
-      status: 'In Progress',
-      orderNumber: 7,
-      productLine: 'Line4',
-      product: 'Product Name 5',
-      quantity: '17 TH',
-      dataRequested: 1706870638000
-    }
-  ];
-
+export class ResponsiveTableComponent implements  OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+  public  mockedData!: TableDataResponse[];
+  public dataSource!: MatTableDataSource<TableDataResponse>;
   public columnsMappings = [
     {id: 'status', headerTitle:  'Status'},
     {id: 'orderNumber', headerTitle:  'Order Number'},
@@ -68,48 +22,48 @@ export class ResponsiveTableComponent implements  OnInit {
     {id: 'product', headerTitle:  'Product'},
     {id: 'quantity', headerTitle:  'Quantity'},
     {id: 'dataRequested', headerTitle:  'Data Requested'},
-  ]
-
+  ];
   public columns = this.columnsMappings.map(column => column.id);
-  public dataSource = new MatTableDataSource(this.mockedData);
-
   public formGroup = this.formBuilder.group({
-    inProgress: true,
-    pending: true,
-    completed: true,
+    inProgress: new FormControl(true),
+    pending: new FormControl(true),
+    completed: new FormControl(true),
     productLines:  new FormControl(),
     dateFrom: new FormControl(),
     dateTo: new FormControl(),
-    orderNumberSearch: ''
+    orderNumberSearch: new FormControl(''),
   });
   public productLines!: string[];
   public productLinesSet: Set<string> = new Set();
   public selectedProductLines!: string[];
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private orderHistoryService: OrderHistoryService) {}
 
   public ngOnInit(): void {
-    this.createProductLinesFromMockData();
-    this.formGroup.get('orderNumberSearch')?.valueChanges.subscribe(() => {
-      this.applyFilters();
-    });
-    this.formGroup.get('productLines')?.valueChanges.subscribe(() => {
-      this.applyFilters();
-    });
-    this.formGroup.get('inProgress')?.valueChanges.subscribe(() => {
-      this.applyFilters();
-    });
-    this.formGroup.get('pending')?.valueChanges.subscribe(() => {
-      this.applyFilters();
-    });
-    this.formGroup.get('completed')?.valueChanges.subscribe(() => {
-      this.applyFilters();
-    });
-    this.formGroup.get('dateFrom')?.valueChanges.subscribe(() => {
-      this.applyFilters();
-    });
-    this.formGroup.get('dateTo')?.valueChanges.subscribe(() => {
-      this.applyFilters();
-    });
+    this.orderHistoryService.getOrderHistory().pipe(takeUntil(this.destroy$)).subscribe(
+      (response)=>{
+        this.mockedData = response;
+        this.dataSource = new MatTableDataSource(this.mockedData);
+        this.createProductLinesFromMockData();
+        const observables = [
+          this.formGroup.get('orderNumberSearch')?.valueChanges,
+          this.formGroup.get('productLines')?.valueChanges,
+          this.formGroup.get('inProgress')?.valueChanges,
+          this.formGroup.get('pending')?.valueChanges,
+          this.formGroup.get('completed')?.valueChanges,
+          this.formGroup.get('dateFrom')?.valueChanges,
+          this.formGroup.get('dateTo')?.valueChanges,
+        ].filter(Boolean);
+        merge(...observables).pipe(takeUntil(this.destroy$)).subscribe(() => {
+          this.applyFilters();
+        })
+      }
+    )
+
+  }
+
+  public ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private applyFilters(): void {
