@@ -12,7 +12,7 @@
       </section>
       <section class="filter-section">
         <div>Product Line</div>
-        <mat-form-field>
+        <mat-form-field class="product-line-field">
           <mat-select placeholder="All Product Lines" formControlName="productLines" [(value)]="selectedProductLines" multiple>
             <mat-option *ngFor="let productLine of productLines" [value]="productLine">{{productLine}}</mat-option>
           </mat-select>
