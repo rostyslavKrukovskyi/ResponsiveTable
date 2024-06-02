@@ -11,7 +11,6 @@
     margin: 0;
   }
 }
-
 .main-wrapper {
   height: calc(100% - 60px);
   padding: 30px;
@@ -47,17 +46,14 @@
       width: 270px;
     }
   }
-
-  .status-indicator.In\ Progress {
-    background-color: indianred;
+  .status-indicator.in-progress {
+    background-color: cornflowerblue;
   }
-
-  .status-indicator.Completed {
+  .status-indicator.pending {
+    background-color: darkorange;
+  }
+  .status-indicator.completed {
     background-color: green;
-  }
-
-  .status-indicator.Pending {
-    background-color: yellow;
   }
 
   .no-data {
