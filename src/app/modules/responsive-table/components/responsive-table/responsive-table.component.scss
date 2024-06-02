@@ -11,3 +11,27 @@
   }
 }
 
+.main-wrapper {
+  height: calc(100% - 60px);
+  padding: 30px;
+}
+
+.status-indicator {
+  background: aqua;
+  display: inline-block;
+  width: 22px;
+  height: 12px;
+  margin-right: 0.5rem;
+}
+
+.status-indicator.In\ Progress {
+  background-color: yellow;
+}
+
+.status-indicator.Completed {
+  background-color: green;
+}
+
+.status-indicator.Pending {
+  background-color: blue;
+}

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
-import {FormBuilder} from "@angular/forms";
+import {FormBuilder, FormControl} from "@angular/forms";
 
 export interface TableDataResponse {
   status: 'In Progress' | 'Pending' | 'Completed';
@@ -25,7 +25,7 @@ export class ResponsiveTableComponent implements  OnInit {
       productLine: 'Line1',
       product: 'Product Name',
       quantity: '12 m3',
-      dataRequested: 1717685490
+      dataRequested: 1717325038000,
     },
     {
       status: 'Completed',
@@ -33,7 +33,7 @@ export class ResponsiveTableComponent implements  OnInit {
       productLine: 'Line2',
       product: 'Product Name 4',
       quantity: '17 m3',
-      dataRequested: 1747085490
+      dataRequested: 1714646638000,
     },
     {
       status: 'In Progress',
@@ -41,7 +41,7 @@ export class ResponsiveTableComponent implements  OnInit {
       productLine: 'Line3',
       product: 'Product Name 67',
       quantity: '189 m3',
-      dataRequested: 17178085490
+      dataRequested: 1712054638000
     },
     {
       status: 'Pending',
@@ -49,7 +49,7 @@ export class ResponsiveTableComponent implements  OnInit {
       productLine: 'Line4',
       product: 'Product Name 4',
       quantity: '12 m3',
-      dataRequested: 1717485490
+      dataRequested: 1709376238000
     },
     {
       status: 'In Progress',
@@ -57,7 +57,7 @@ export class ResponsiveTableComponent implements  OnInit {
       productLine: 'Line4',
       product: 'Product Name 5',
       quantity: '17 TH',
-      dataRequested: 1717085450
+      dataRequested: 1706870638000
     }
   ];
 
@@ -74,10 +74,10 @@ export class ResponsiveTableComponent implements  OnInit {
   public dataSource = new MatTableDataSource(this.mockedData);
 
   public formGroup = this.formBuilder.group({
-    inProgress: false,
-    pending: false,
-    completed: false,
-    productLines: [''],
+    inProgress: true,
+    pending: true,
+    completed: true,
+    productLines:  new FormControl(),
     orderNumberSearch: ''
   });
   public productLines!: string[];
@@ -93,22 +93,41 @@ export class ResponsiveTableComponent implements  OnInit {
     this.formGroup.get('productLines')!.valueChanges.subscribe(() => {
       this.applyFilters();
     });
+    this.formGroup.get('inProgress')!.valueChanges.subscribe(() => {
+      this.applyFilters();
+    });
+    this.formGroup.get('pending')!.valueChanges.subscribe(() => {
+      this.applyFilters();
+    });
+    this.formGroup.get('completed')!.valueChanges.subscribe(() => {
+      this.applyFilters();
+    });
   }
 
   private applyFilters(): void {
-    let searchString = this.formGroup.get('orderNumberSearch')?.value || '';
-    let selectedLines = this.formGroup.get('productLines')?.value || [''];
+    const searchString = this.formGroup.get('orderNumberSearch')?.value || '';
+    const selectedLines = this.formGroup.get('productLines')?.value || [''];
+    const inProgress = this.formGroup.get('inProgress')?.value ?? true;
+    const pending = this.formGroup.get('pending')?.value ?? true;
+    const completed = this.formGroup.get('completed')?.value ?? true;
 
     this.dataSource.data = this.mockedData.filter(item => {
-      let matchesOrderNumber = searchString ? item.orderNumber.toString().includes(searchString) : true;
-      let matchesProductLine = selectedLines.length > 0 ? selectedLines.includes(item.productLine) : true;
-      return matchesOrderNumber && matchesProductLine;
+      const matchesStatus =  (item.status === 'In Progress' && inProgress) || (item.status === 'Pending' && pending) || (item.status === 'Completed' && completed);
+      const matchesOrderNumber = searchString ? item.orderNumber.toString().includes(searchString) : true;
+      const matchesProductLine = selectedLines.length > 0 ? selectedLines.includes(item.productLine) : true;
+      return matchesOrderNumber && matchesProductLine && matchesStatus;
     });
   }
+
   private createProductLinesFromMockData(): void {
-    this.mockedData.forEach((item)=>{
-      this.productLinesSet.add(item.productLine)
+    this.mockedData.forEach((item)=> {
+      this.productLinesSet.add(item.productLine);
     });
     this.productLines = [...this.productLinesSet];
+    if (this.productLines.length > 1) {
+      this.formGroup.patchValue({
+        productLines: this.productLines
+      });
+    }
   }
 }
