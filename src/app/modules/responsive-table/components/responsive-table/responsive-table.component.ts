@@ -1,5 +1,4 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
-import {MatTableDataSource} from "@angular/material/table";
 import {FormBuilder, FormControl} from "@angular/forms";
 import {merge, Subject, takeUntil} from "rxjs";
 import {TableDataResponse} from "../../model/order-data.model";
@@ -14,7 +13,7 @@ import {OrderHistoryService} from "../../services/order-history.service";
 export class ResponsiveTableComponent implements  OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   public  mockedData!: TableDataResponse[];
-  public dataSource!: MatTableDataSource<TableDataResponse>;
+  public dataSource!: TableDataResponse[];
   public columnsMappings = [
     {id: 'status', headerTitle:  'Status'},
     {id: 'orderNumber', headerTitle:  'Order Number'},
@@ -42,7 +41,7 @@ export class ResponsiveTableComponent implements  OnInit, OnDestroy {
     this.orderHistoryService.getOrderHistory().pipe(takeUntil(this.destroy$)).subscribe(
       (response)=>{
         this.mockedData = response;
-        this.dataSource = new MatTableDataSource(this.mockedData);
+        this.dataSource = response;
         this.createProductLinesFromMockData();
         const observables = [
           this.formGroup.get('orderNumberSearch')?.valueChanges,
@@ -66,6 +65,10 @@ export class ResponsiveTableComponent implements  OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  public getGridTemplateColumns(): string {
+    return `repeat(${this.columnsMappings.length}, 1fr)`;
+  }
+
   private applyFilters(): void {
     const searchString = this.formGroup.get('orderNumberSearch')?.value || '';
     const selectedLines = this.formGroup.get('productLines')?.value || [''];
@@ -75,7 +78,7 @@ export class ResponsiveTableComponent implements  OnInit, OnDestroy {
     const dateFrom = this.formGroup.get('dateFrom')?.value || null;
     const dateTo = this.formGroup.get('dateTo')?.value || null;
 
-    this.dataSource.data = this.mockedData.filter(item => {
+    this.dataSource = this.mockedData.filter(item => {
       const matchesStatus =  (item.status === 'In Progress' && inProgress) || (item.status === 'Pending' && pending) || (item.status === 'Completed' && completed);
       const matchesOrderNumber = searchString ? item.orderNumber.toString().includes(searchString) : true;
       const matchesProductLine = selectedLines.length > 0 ? selectedLines.includes(item.productLine) : true;

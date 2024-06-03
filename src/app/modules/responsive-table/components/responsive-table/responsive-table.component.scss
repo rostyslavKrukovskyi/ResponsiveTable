@@ -15,10 +15,13 @@
   height: calc(100% - 60px);
   padding: 30px;
   .filters-header {
+    padding: 15px;
+    background: white;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 10px;
+    margin-bottom: 70px;
     .left-filters-part {
       display: flex;
       flex-wrap: wrap;
@@ -71,4 +74,27 @@
     height: 12px;
     margin-right: 0.5rem;
   }
+}
+
+.list-header,.row {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  padding: 15px;
+}
+.cell {
+  min-width: 50px;
+}
+.list-header {
+  font-size: 17px;
+  font-weight: 500;
+}
+.row {
+  background: white;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  height: 40px;
+  font-size: 15px;
+  font-weight: 300;
+  margin-bottom: 15px;
 }

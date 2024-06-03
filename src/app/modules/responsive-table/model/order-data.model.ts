@@ -5,4 +5,5 @@ export interface TableDataResponse {
   product: string;
   quantity: string;
   dataRequested: number;
+  [key: string]: string | number | Date;
 }
