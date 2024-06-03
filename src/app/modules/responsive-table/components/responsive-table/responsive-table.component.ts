@@ -22,7 +22,6 @@ export class ResponsiveTableComponent implements  OnInit, OnDestroy {
     {id: 'quantity', headerTitle:  'Quantity'},
     {id: 'dataRequested', headerTitle:  'Data Requested'},
   ];
-  public columns = this.columnsMappings.map(column => column.id);
   public formGroup = this.formBuilder.group({
     inProgress: new FormControl(true),
     pending: new FormControl(true),
@@ -54,10 +53,9 @@ export class ResponsiveTableComponent implements  OnInit, OnDestroy {
         ].filter(Boolean);
         merge(...observables).pipe(takeUntil(this.destroy$)).subscribe(() => {
           this.applyFilters();
-        })
+        });
       }
-    )
-
+    );
   }
 
   public ngOnDestroy(): void {

@@ -52,62 +52,62 @@
     .product-line-field {
       width: 250px;
     }
-  }
-  .status-indicator.in-progress {
-    background-color: cornflowerblue;
-  }
-  .status-indicator.pending {
-    background-color: darkorange;
-  }
-  .status-indicator.completed {
-    background-color: green;
+    .status-indicator.in-progress {
+      background-color: cornflowerblue;
+    }
+    .status-indicator.pending {
+      background-color: darkorange;
+    }
+    .status-indicator.completed {
+      background-color: green;
+    }
+
+    .no-data {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 22px;
+      height: 12px;
+      margin-right: 0.5rem;
+    }
   }
 
-  .no-data {
-    display: flex;
-    flex-direction: column;
+  .list-header,.row {
+    min-width: 490px;
+    display: grid;
     align-items: center;
+    justify-content: center;
+    height: 50px;
+    padding: 15px;
+  }
+  .cell {
+    min-width: 50px;
+    text-align: center;
+  }
+  .list-header {
+    font-size: 17px;
+    font-weight: 500;
+  }
+  .row {
+    background: white;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    height: 40px;
+    font-size: 15px;
+    font-weight: 300;
+    margin-bottom: 15px;
   }
 
-  .status-indicator {
-    display: inline-block;
-    width: 22px;
-    height: 12px;
-    margin-right: 0.5rem;
+  .divider {
+    border-right: 2px solid #C9C9C9;
+    height: 50px;
+    display: flex;
+    align-self: center;
+    margin: 0 10px;
   }
-}
-
-.list-header,.row {
-  min-width: 490px;
-  display: grid;
-  align-items: center;
-  justify-content: center;
-  height: 50px;
-  padding: 15px;
-}
-.cell {
-  min-width: 50px;
-  text-align: center;
-}
-.list-header {
-  font-size: 17px;
-  font-weight: 500;
-}
-.row {
-  background: white;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  height: 40px;
-  font-size: 15px;
-  font-weight: 300;
-  margin-bottom: 15px;
-}
-
-.divider {
-  border-right: 2px solid #C9C9C9;
-  height: 50px;
-  display: flex;
-  align-self: center;
-  margin: 0 10px;
 }
 
 @media screen and (max-width: 700px) {
