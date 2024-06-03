@@ -22,6 +22,7 @@
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 70px;
+    min-width: 350px;
     .left-filters-part {
       display: flex;
       flex-wrap: wrap;
@@ -41,6 +42,7 @@
       flex-direction: column;
       .status-checkboxes {
         display: flex;
+        flex-wrap: wrap;
       }
     }
     .search-field {
@@ -76,6 +78,7 @@
 }
 
 .list-header,.row {
+  min-width: 490px;
   display: grid;
   align-items: center;
   justify-content: center;
@@ -84,6 +87,7 @@
 }
 .cell {
   min-width: 50px;
+  text-align: center;
 }
 .list-header {
   font-size: 17px;
@@ -100,8 +104,14 @@
 
 .divider {
   border-right: 2px solid #C9C9C9;
-  height: 90%;
+  height: 50px;
   display: flex;
   align-self: center;
   margin: 0 10px;
+}
+
+@media screen and (max-width: 700px) {
+  .divider {
+    display: none;
+  }
 }

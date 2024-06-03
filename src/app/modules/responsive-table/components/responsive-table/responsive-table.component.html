@@ -8,9 +8,9 @@
           <p><mat-checkbox formControlName="pending">Pending</mat-checkbox></p>
           <p><mat-checkbox formControlName="inProgress">In Progress</mat-checkbox></p>
           <p><mat-checkbox formControlName="completed">Completed</mat-checkbox></p>
+          <div class="divider"></div>
         </div>
       </section>
-      <div class="divider"></div>
       <section class="filter-section">
         <div>Product Line</div>
         <mat-form-field class="product-line-field">
@@ -44,28 +44,30 @@
       <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
   </div>
-  <div class="list-header" [ngStyle]="{'grid-template-columns': getGridTemplateColumns()}">
-    <div class="cell" *ngFor="let column of columnsMappings">{{ column.headerTitle }}</div>
-  </div>
-  <div class="list-body">
-    <div [ngStyle]="{'grid-template-columns': getGridTemplateColumns()}" class="row" *ngFor="let row of dataSource">
-      <div class="cell" *ngFor="let column of columnsMappings">
-        <ng-container *ngIf="column.id === 'status'">
-          <div class="status-indicator" [ngClass]="{
-            'in-progress': row.status === 'In Progress',
-            'pending': row.status === 'Pending',
-            'completed': row.status === 'Completed',
-          }"></div>
-        </ng-container>
-        <ng-container *ngIf="column.id === 'dataRequested'">
-          {{ row[column.id] | date:'dd.MM.yyyy'}}
-        </ng-container>
-        <ng-container *ngIf="column.id !== 'dataRequested'">
-          {{ row[column.id]}}
-        </ng-container>
+  <ng-container *ngIf="dataSource.length > 0">
+    <div class="list-header" [ngStyle]="{'grid-template-columns': getGridTemplateColumns()}">
+      <div class="cell" *ngFor="let column of columnsMappings">{{ column.headerTitle }}</div>
+    </div>
+    <div class="list-body">
+      <div [ngStyle]="{'grid-template-columns': getGridTemplateColumns()}" class="row" *ngFor="let row of dataSource">
+        <div class="cell" *ngFor="let column of columnsMappings">
+          <ng-container *ngIf="column.id === 'status'">
+            <div class="status-indicator" [ngClass]="{
+              'in-progress': row.status === 'In Progress',
+              'pending': row.status === 'Pending',
+              'completed': row.status === 'Completed',
+            }"></div>
+          </ng-container>
+          <ng-container *ngIf="column.id === 'dataRequested'">
+            {{ row[column.id] | date:'dd.MM.yyyy'}}
+          </ng-container>
+          <ng-container *ngIf="column.id !== 'dataRequested'">
+            {{ row[column.id]}}
+          </ng-container>
+        </div>
       </div>
     </div>
-  </div>
+  </ng-container>
   <ng-container *ngIf="dataSource.length === 0">
     <div class="no-data">
       <mat-icon>info</mat-icon>
