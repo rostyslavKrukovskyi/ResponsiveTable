@@ -39,7 +39,6 @@
     .status-section {
       display: flex;
       flex-direction: column;
-      padding: 10px;
       .status-checkboxes {
         display: flex;
       }
@@ -97,4 +96,12 @@
   font-size: 15px;
   font-weight: 300;
   margin-bottom: 15px;
+}
+
+.divider {
+  border-right: 2px solid #C9C9C9;
+  height: 90%;
+  display: flex;
+  align-self: center;
+  margin: 0 10px;
 }
